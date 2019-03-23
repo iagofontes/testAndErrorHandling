@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 public interface OrderRepository {
     public OrderDTO findById(int idPedido);
     public OrderDTO save(OrderDTO orderDTO);
-    public OrderDTO update(int idPedido, OrderDTO orderDTO);
-    public OrderDTO delete(int idPedido);
+    public OrderDTO update(OrderDTO orderDTO);
+    public String delete(int idPedido);
 }
 

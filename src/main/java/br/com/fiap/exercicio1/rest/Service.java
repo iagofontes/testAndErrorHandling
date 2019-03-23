@@ -29,18 +29,18 @@ public class Service {
         OrderDTO savedOrder = orderRepository.save(orderDTO);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
+                .path("/{idPedido}")
                 .buildAndExpand(savedOrder.getIdPedido()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @RequestMapping(value="update", method = RequestMethod.PUT)
-    public ResponseEntity<OrderDTO> update(@Valid @RequestBody int idPedido, OrderDTO orderDTO) {
-        return new ResponseEntity<OrderDTO>(orderRepository.update(idPedido, orderDTO), HttpStatus.valueOf(200));
+    public ResponseEntity<OrderDTO> update(@Valid @RequestBody OrderDTO orderDTO) {
+        return new ResponseEntity<OrderDTO>(orderRepository.update(orderDTO), HttpStatus.valueOf(200));
     }
 
-    @RequestMapping(value="delete", method = RequestMethod.DELETE)
-    public ResponseEntity<OrderDTO> delete(@Valid @RequestBody int idPedido) {
-        return new ResponseEntity<OrderDTO>(orderRepository.delete(idPedido), HttpStatus.valueOf(200));
+    @RequestMapping(value="delete/{idPedido}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> delete(@PathVariable(value="idPedido")@Valid @RequestBody int idPedido) {
+        return new ResponseEntity<String>(orderRepository.delete(idPedido), HttpStatus.valueOf(200));
     }
 }

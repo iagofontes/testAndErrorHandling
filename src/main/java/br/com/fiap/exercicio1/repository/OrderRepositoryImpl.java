@@ -35,7 +35,7 @@ public class OrderRepositoryImpl implements OrderRepository{
     }
 
     @Override
-    public OrderDTO update(int idPedido, OrderDTO orderDTO) {
+    public OrderDTO update(OrderDTO orderDTO) {
         for (int i = 0; i < orderList.size(); i++) {
             if (orderList.get(i).getIdPedido() == orderDTO.getIdPedido()) {
                 orderList.set(i, orderDTO);
@@ -45,11 +45,11 @@ public class OrderRepositoryImpl implements OrderRepository{
         return null;
     }
 
-    public OrderDTO delete(int idPedido) {
+    public String delete(int idPedido) {
         for (int i = 0; i < orderList.size(); i++) {
             if (orderList.get(i).getIdPedido() == idPedido) {
                 orderList.remove(i);
-                return orderList.get(i);
+                return "Excluído com sucesso.";
             }
         }
         return null;
