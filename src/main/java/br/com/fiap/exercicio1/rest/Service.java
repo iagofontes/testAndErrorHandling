@@ -29,7 +29,7 @@ public class Service {
         OrderDTO savedOrder = orderRepository.save(orderDTO);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
+                .path("/{idPedido}")
                 .buildAndExpand(savedOrder.getIdPedido()).toUri();
         return ResponseEntity.created(location).build();
     }
