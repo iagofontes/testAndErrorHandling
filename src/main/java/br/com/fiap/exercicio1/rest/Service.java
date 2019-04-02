@@ -1,9 +1,9 @@
 package br.com.fiap.exercicio1.rest;
 
 import br.com.fiap.exercicio1.dto.OrderDTO;
+import br.com.fiap.exercicio1.exception.InvalidOrderException;
+import br.com.fiap.exercicio1.exception.OrderNotFoundException;
 import br.com.fiap.exercicio1.repository.OrderRepository;
-import br.com.fiap.exercicio1.repository.OrderRepositoryImpl;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,12 @@ public class Service {
 
     @RequestMapping(value="findById/{idPedido}", method = RequestMethod.GET)
     public ResponseEntity<OrderDTO> findById(@PathVariable(value="idPedido") int idPedido) {
-        return new ResponseEntity<OrderDTO>(orderRepository.findById(idPedido), HttpStatus.valueOf(200));
+        OrderDTO order = new OrderDTO();
+        order = orderRepository.findById(idPedido);
+        if(order == null){
+            throw new OrderNotFoundException("Pedido não encontrado. Id - "+idPedido);
+        }
+        return new ResponseEntity<OrderDTO>(order, HttpStatus.valueOf(200));
     }
 
     @RequestMapping(value="save", method = RequestMethod.POST)
@@ -36,6 +41,9 @@ public class Service {
 
     @RequestMapping(value="update", method = RequestMethod.PUT)
     public ResponseEntity<OrderDTO> update(@Valid @RequestBody OrderDTO orderDTO) {
+        if(orderDTO.getIdPedido() == 0){
+            throw new InvalidOrderException("Registro inválido");
+        }
         return new ResponseEntity<OrderDTO>(orderRepository.update(orderDTO), HttpStatus.valueOf(200));
     }
 
